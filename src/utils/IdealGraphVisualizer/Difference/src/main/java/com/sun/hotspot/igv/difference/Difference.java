@@ -86,6 +86,25 @@ public class Difference {
         }
     }
 
+    public static boolean isSame(InputGraph a, InputGraph b) {
+        // Difference between block edges
+        if (!a.getBlockEdges().equals(b.getBlockEdges())) {
+            return false;
+        }
+
+        // MAIN_PROPERTYで比較する？ .getProperties().get(MAIN_PROPERTY); && properties自体の比較 label問題
+        if (!new HashSet(a.getNodes()).equals(new HashSet(b.getNodes()))) {
+            System.out.println("=========================");
+            return false;
+        }
+
+        if (a.getEdges().equals(b.getEdges())) {
+            // same
+            return true;
+        }
+        return false;
+    }
+
     private static InputGraph createDiff(InputGraph a, InputGraph b, Set<NodePair> pairs) {
         ensureScheduled(a);
         ensureScheduled(b);
