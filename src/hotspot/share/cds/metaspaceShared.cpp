@@ -1124,7 +1124,6 @@ void MetaspaceShared::initialize_runtime_shared_and_meta_spaces() {
     if (CDSConfig::is_dumping_dynamic_archive()) {
       log_warning(cds)("-XX:ArchiveClassesAtExit is unsupported when base CDS archive is not loaded. Run with -Xlog:cds for more info.");
     }
-    UseSharedSpaces = false;
     // The base archive cannot be mapped. We cannot dump the dynamic shared archive.
     AutoCreateSharedArchive = false;
     CDSConfig::disable_dumping_dynamic_archive();
@@ -1134,6 +1133,10 @@ void MetaspaceShared::initialize_runtime_shared_and_meta_spaces() {
     } else if (RequireSharedSpaces) {
       MetaspaceShared::unrecoverable_loading_error("Unable to map shared spaces");
     }
+    if (UseSharedSpaces) {
+      log_warning(cds)("Unable to use shared archive");
+    }
+    UseSharedSpaces = false;
   }
 
   // If mapping failed and -XShare:on, the vm should exit
